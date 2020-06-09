@@ -5,8 +5,6 @@ const app = express();
 const port = 3000;
 
 app.get('/api/movie', (req, res) => {
-  console.log(connection);
-  // const name = request.query.name;
    connection.query('SELECT * from movie', (err, results) => {
       if (err) {
        res.status(500).send('Erreur lors de la récupération des films');
@@ -27,7 +25,6 @@ app.get('/api/movie/name', (req, res) => {
   });
 
 app.listen(port, (err) => {
-  console.log(port)
     if (err) {
       console.error('Something bad happened');
     } else {
