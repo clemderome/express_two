@@ -6,8 +6,4 @@ const connection = mysql.createConnection({
     database: 'company'
 })
 
-connection.connect(function(err){
-    (err)? console.log(err+' No connect'): console.log(connection + 'ok');
-});
-
 module.exports = connection;

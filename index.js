@@ -4,31 +4,36 @@ const connection = require('./conf');
 const app = express();
 const port = 3000;
 
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
+
 app.get('/api/movie', (req, res) => {
-   connection.query('SELECT * from movie', (err, results) => {
-      if (err) {
-       res.status(500).send('Erreur lors de la récupération des films');
-      } else {
-        res.json(results);
-      }
-    });
-  });
-
-app.get('/api/movie/name', (req, res) => {
-    connection.query('SELECT name FROM movie', (err, results) => {
-      if (err) {
-        res.status(500).send('Erreur lors de la récupération des noms de films');
-      } else {
-        res.json(results);
-      }
-    });
-  });
-
-app.listen(port, (err) => {
+  connection.query('SELECT * from movie', (err, results) => {
     if (err) {
-      console.error('Something bad happened');
+      res.status(500).send('Erreur lors de la récupération des films');
     } else {
-      console.log(`server is listening on ${port}`);
+      res.json(results);
     }
   });
-  
+});
+
+app.post('/api/movie', (req, res) => {
+  const formData = req.body;
+  connection.query('INSERT INTO movie SET ?', formData, (err, results) => {
+    if (err) {
+      res.status(500).send("Erreur lors de la sauvegarde d'un film");
+    } else {
+      res.sendStatus(200);
+    }
+  });
+});
+
+app.listen(port, (err) => {
+  if (err) {
+    console.error('Something bad happened');
+  } else {
+    console.log(`server is listening on ${port}`);
+  }
+});
